@@ -1,3 +1,6 @@
+/**
+ * Vite 환경에선 환경 변수 이름이 VITE로 시작해야 함
+ */
 export const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,

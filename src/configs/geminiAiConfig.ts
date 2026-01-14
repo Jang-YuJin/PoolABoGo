@@ -1,0 +1,1 @@
+export const GEMINI_AI_KEY = import.meta.env.VITE_GEMINI_AI_KEY;

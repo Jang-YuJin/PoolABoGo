@@ -95,9 +95,17 @@ const HeaderContainer = styled("header")(({ theme }) => ({
   height: "100px",
   background: theme.palette.background.paper,
   padding: "0 5%",
+
+  [theme.breakpoints.down("md")]: {
+    height: "90px",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    height: "80px",
+  },
 }));
 
-const HeaderInner = styled("div")(() => ({
+const HeaderInner = styled("div")(({ theme }) => ({
   maxWidth: "1280px",
   width: "100%",
   padding: "20px 0",
@@ -113,6 +121,20 @@ const HeaderInner = styled("div")(() => ({
     width: "160px",
     height: "auto",
     objectFit: "cover",
+  },
+
+  [theme.breakpoints.down("md")]: {
+    padding: "16px 0",
+    "& img": {
+      width: "146px",
+    },
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    padding: "14px 0",
+    "& img": {
+      width: "128px",
+    },
   },
 }));
 

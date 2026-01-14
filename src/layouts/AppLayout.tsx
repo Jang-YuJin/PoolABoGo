@@ -24,23 +24,32 @@ const AppLayout = () => {
 export default AppLayout;
 
 // 스타일드컴포넌트
-const MainContainer = styled("main")(() => ({
-  width: "100%",
+const MainContainer = styled("main")(({ theme }) => ({
+  width: "90%",
   height: "100%",
   minHeight: "calc(100vh - 200px)",
-}));
-
-const ContentContainer = styled("div")(({ theme }) => ({
-  maxWidth: "1280px",
-  width: "90%",
-  padding: "160px 5%",
   margin: "0 auto",
+  maxWidth: "1280px",
 
   [theme.breakpoints.down("md")]: {
-    padding: "120px 5%",
+    minHeight: "calc(100vh - 180px)",
   },
 
   [theme.breakpoints.down("sm")]: {
-    padding: "60px 5%",
+    minHeight: "calc(100vh - 160px)",
+  },
+}));
+
+const ContentContainer = styled("div")(({ theme }) => ({
+  width: "100%",
+  padding: "160px 0",
+  margin: "0 auto",
+
+  [theme.breakpoints.down("md")]: {
+    padding: "120px 0",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    padding: "60px 0",
   },
 }));

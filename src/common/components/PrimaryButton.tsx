@@ -42,6 +42,17 @@ const StyledButton = styled(Button)(({ theme }) => ({
   boxShadow: "none",
   transition: "all .3s ease",
   textTransform: "none",
+
+  [theme.breakpoints.down("md")]: {
+    height: 50,
+    padding: "0 28px",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    height: 45,
+    padding: "0 26px",
+  },
+
   "&:hover": {
     boxShadow: "none",
     backgroundColor: theme.palette.background.paper,

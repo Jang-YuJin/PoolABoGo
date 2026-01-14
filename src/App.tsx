@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 const AppLayout = React.lazy(() => import("./layouts/AppLayout"));
 const MainPage = React.lazy(() => import("./pages/main/MainPage"));
 const RecordPage = React.lazy(() => import("./pages/record/RecordPage"));
-const MyPage = React.lazy(() => import("./pages/record/RecordPage"));
+const MyPage = React.lazy(() => import("./pages/mypage/MyPage"));
 
 // 메인 '/'
 // 기록 '/record'

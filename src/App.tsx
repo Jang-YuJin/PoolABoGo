@@ -1,7 +1,7 @@
-import React, { Suspense, useState } from 'react'
-import './App.css'
-import AiSample from './pages/aiSample/AiSample';
+import React, { Suspense } from "react";
+import "./App.css";
 import { Route, Routes } from "react-router-dom";
+import AiSample from './pages/aiSample/AiSample';
 
 const AppLayout = React.lazy(() => import("./layouts/AppLayout"));
 const MainPage = React.lazy(() => import("./pages/main/MainPage"));

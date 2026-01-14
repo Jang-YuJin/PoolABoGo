@@ -2,7 +2,7 @@ import React from "react";
 import { styled, Typography } from "@mui/material";
 import PlantsCard from "../../common/components/PlantsCard";
 
-const Mypage = () => {
+const MyPage = () => {
   return (
     <div>
       <Typography variant="h1">나의 반려식물 둘러보기</Typography>
@@ -22,7 +22,7 @@ const Mypage = () => {
   );
 };
 
-export default Mypage;
+export default MyPage;
 
 const CardWrap = styled("div")(({ theme }) => ({
   display: "flex",

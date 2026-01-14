@@ -2,10 +2,10 @@ import React, { Suspense } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
-const AppLayout = React.lazy(() => import("./laylouts/AppLayout"));
-const Main = React.lazy(() => import("./pages/main/Main"));
-const Record = React.lazy(() => import("./pages/record/Record"));
-const Mypage = React.lazy(() => import("./pages/mypage/Mypage"));
+const AppLayout = React.lazy(() => import("./layouts/AppLayout"));
+const MainPage = React.lazy(() => import("./pages/main/MainPage"));
+const RecordPage = React.lazy(() => import("./pages/record/RecordPage"));
+const MyPage = React.lazy(() => import("./pages/record/RecordPage"));
 
 // 메인 '/'
 // 기록 '/record'
@@ -16,9 +16,9 @@ function App() {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path="/" element={<AppLayout></AppLayout>}>
-          <Route index element={<Main></Main>}></Route>
-          <Route path="/record" element={<Record></Record>}></Route>
-          <Route path="/mypage" element={<Mypage></Mypage>}></Route>
+          <Route index element={<MainPage></MainPage>}></Route>
+          <Route path="/record" element={<RecordPage></RecordPage>}></Route>
+          <Route path="/mypage" element={<MyPage></MyPage>}></Route>
         </Route>
       </Routes>
     </Suspense>

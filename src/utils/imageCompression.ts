@@ -42,3 +42,31 @@ export async function generateThumbnail(file: File): Promise<File> {
 export function isImageFile(file: File): boolean {
   return file.type.startsWith('image/'); // 이미지 파일 여부
 }
+
+// 이미지 파일을 Base64 문자열로 변환 (Gemini API 호출용)
+export async function convertImageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    // FileReader 객체 생성
+    const reader = new FileReader();
+    // FileReader 객체 읽기 완료 이벤트 처리
+    reader.onload = () => {
+      const result = reader.result; // 읽은 파일 데이터
+      if (typeof result === 'string') {
+        // data:image/jpeg;base64, 부분을 제거하고 순수 Base64 문자열만 반환
+        const base64String = result.split(',')[1];
+        resolve(base64String); // Base64 문자열 반환
+      } else {
+        reject(new Error('Base64 변환 실패'));
+      }
+    };
+    reader.onerror = () => {
+      reject(new Error('파일 읽기 실패'));
+    };
+    reader.readAsDataURL(file); // 파일 읽기
+  });
+}
+
+// Base64 문자열을 data URL 형식으로 변환 (미리보기 등에 사용)
+export function base64ToDataURL(base64: string, mimeType: string = 'image/jpeg'): string {
+  return `data:${mimeType};base64,${base64}`;
+}

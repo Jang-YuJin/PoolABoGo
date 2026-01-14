@@ -3,23 +3,40 @@ import PrimaryButton from "../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 import PlantsCard from "../../common/components/PlantsCard";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 // 메인페이지
 // 모든 유저 -> 기록하러가기만 보임
 // 로그인 후 기록 저장 된 유저 -> 하단 나의 반려식물 카드 보임
 const MainPage = () => {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+
+  // 등장 애니메이션
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+      easing: "ease-out-cubic",
+      once: true,
+    });
+  }, []);
 
   return (
     <ContentsWrap>
       {/* 모든 유저 */}
       <TopContents>
-        <Typography variant="h1">식물의 이야기를 남겨볼까요?</Typography>
-        <img src="/src/assets/mainImage.png" alt="풀어보고" />
-        <PrimaryButton label="기록하러 가기" onClick={() => Navigate("/record")} />
+        <Typography variant="h1" data-aos="fade-up">
+          식물의 이야기를 남겨볼까요?
+        </Typography>
+        <img src="/src/assets/mainImage.png" alt="풀어보고" data-aos="fade-up" />
+        <div data-aos="fade-up">
+          <PrimaryButton label="기록하러 가기" onClick={() => navigate("/record")} />
+        </div>
       </TopContents>
 
       {/* 식물 사진 저장 했을 때 보여짐 */}
-      <SwiperContents>
+      <UserPlantsContents>
         <Typography variant="h1" fontWeight={700}>
           나의 대표 반려식물
         </Typography>
@@ -29,7 +46,7 @@ const MainPage = () => {
           <PlantsCard />
           <PlantsCard />
         </CardWrap>
-      </SwiperContents>
+      </UserPlantsContents>
     </ContentsWrap>
   );
 };
@@ -78,7 +95,7 @@ const TopContents = styled("div")(({ theme }) => ({
   },
 }));
 
-const SwiperContents = styled("div")(({ theme }) => ({
+const UserPlantsContents = styled("div")(({ theme }) => ({
   "& Typography": {
     marginBottom: "40px",
 

@@ -1,6 +1,6 @@
-import { compressImage, generateThumbnail, isImageFile } from './imageCompression';
-import { uploadImage, uploadThumbnail } from './storage';
-import { createPlantRecord, type CreatePlantRecordParams } from '../apis/recordApi';
+import { compressImage, generateThumbnail, isImageFile } from '../utils/imageCompression';
+import { uploadImage, uploadThumbnail } from '../utils/storage';
+import { createPlantRecord, type CreatePlantRecordParams } from '../models/recordApi';
 
 // 식물 기록 저장 파라미터 인터페이스
 export interface SavePlantRecordParams {

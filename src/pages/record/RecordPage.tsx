@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { savePlantRecord } from '../../utils/plantRecordService';
+import { savePlantRecord } from '../../services/plantRecordService';
 import { PlantStatus, type PlantStatusType } from '../../models/record';
 
 const RecordPage = () => {

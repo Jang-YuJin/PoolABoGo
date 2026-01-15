@@ -11,7 +11,7 @@ import {
   type DocumentData
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
-import type { PlantRecord } from '../models/record';
+import type { PlantRecord } from './record';
 
 const COLLECTION_NAME = 'plantRecords';
 

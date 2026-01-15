@@ -134,6 +134,7 @@ const ImgBox = styled(Box)(() => ({
 const SkeletonImgBox = styled(Skeleton)(() => ({
   width: "100%",
   height: "auto",
+  borderRadius:"20px",
   objectFit: "cover",
 }));
 

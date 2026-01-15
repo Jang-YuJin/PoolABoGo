@@ -1,20 +1,18 @@
-import React, { useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import { Button, Avatar, Menu, MenuItem, Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Link, Link as RouterLink, useNavigate } from "react-router-dom";
-
-// 사용자 타입
-type User = {
-  name: string;
-  avatarUrl?: string;
-  // 추가
-};
+import { Link, useNavigate } from "react-router-dom";
+import { useGetUserProfile } from "../../hooks/useGetUserProfile";
+import { useLogout } from "../../hooks/useLogout";
+import { useLoginWithGoogle } from "../../hooks/useLoginWithGoogle";
 
 // 페이지 상단 헤더 컴포넌트
 const Header = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | null>(null);
+  const { data: user } = useGetUserProfile();
+  const { mutate: loginWithGoogle } = useLoginWithGoogle();
+  const { mutate: logout } = useLogout();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -35,10 +33,17 @@ const Header = () => {
     navigate("/mypage");
   };
 
+  // 로그인
+  const handleLogin = () => {
+    loginWithGoogle();
+    handleCloseMenu();
+    navigate("/");
+  };
+
   // 로그아웃
   const handleLogout = () => {
+    logout();
     handleCloseMenu();
-    setUser(null);
     navigate("/");
   };
 
@@ -52,7 +57,7 @@ const Header = () => {
 
         {/* 로그인 */}
         {!user ? (
-          <Button variant="outlined" component={RouterLink} to="/login">
+          <Button variant="outlined" onClick={handleLogin}>
             로그인
           </Button>
         ) : (
@@ -64,7 +69,7 @@ const Header = () => {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar src={user.avatarUrl} alt={user.name} />
+              <Avatar src={user?.photoURL ?? ""} alt={user?.displayName ?? ""} />
             </AvatarButton>
 
             {/* 아바타 아래 메뉴 */}

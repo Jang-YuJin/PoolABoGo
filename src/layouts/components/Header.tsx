@@ -1,5 +1,5 @@
 import { useState, type MouseEvent } from "react";
-import { Button, Avatar, Menu, MenuItem, Divider } from "@mui/material";
+import { Button, Avatar, Menu, MenuItem, Divider, Skeleton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetUserProfile } from "../../hooks/useGetUserProfile";
@@ -10,7 +10,7 @@ import { useLoginWithGoogle } from "../../hooks/useLoginWithGoogle";
 const Header = () => {
   const navigate = useNavigate();
 
-  const { data: user } = useGetUserProfile();
+  const { data: user, isLoading: isUserLoading } = useGetUserProfile();
   const { mutate: loginWithGoogle } = useLoginWithGoogle();
   const { mutate: logout } = useLogout();
 
@@ -56,7 +56,9 @@ const Header = () => {
         </Link>
 
         {/* 로그인 */}
-        {!user ? (
+        {isUserLoading ? (
+          <AvatarSkeleton variant="circular" />
+        ) : !user ? (
           <Button variant="outlined" onClick={handleLogin}>
             로그인
           </Button>
@@ -152,4 +154,9 @@ const AvatarButton = styled("button")(() => ({
   alignItems: "center",
 
   fontSize: "1rem !important",
+}));
+
+const AvatarSkeleton = styled(Skeleton)(() => ({
+  width: 40,
+  height: 40,
 }));

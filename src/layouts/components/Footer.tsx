@@ -20,6 +20,14 @@ const FooterContainer = styled("footer")(({ theme }) => ({
   width: "100%",
   height: "100px",
   background: theme.palette.background.paper,
+
+  [theme.breakpoints.down("md")]: {
+    height: "90px",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    height: "80px",
+  },
 }));
 
 const FooterInner = styled("div")(() => ({

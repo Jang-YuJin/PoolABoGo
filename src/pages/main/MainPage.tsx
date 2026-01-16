@@ -1,7 +1,7 @@
 import { styled, Typography } from "@mui/material";
 import PrimaryButton from "../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
-import PlantsCard from "../../common/components/PlantsCard";
+import PlantsCard, { SkeletonPlantsCard } from "../../common/components/PlantsCard";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -12,6 +12,7 @@ import { useEffect } from "react";
 // 로그인 후 기록 저장 된 유저 -> 하단 나의 반려식물 카드 보임
 const MainPage = () => {
   const navigate = useNavigate();
+  const isPlantsLoading = true;
 
   // 등장 애니메이션
   useEffect(() => {
@@ -37,14 +38,27 @@ const MainPage = () => {
 
       {/* 식물 사진 저장 했을 때 보여짐 */}
       <UserPlantsContents>
-        <Typography variant="h1" fontWeight={700}>
+        <Typography variant="h1" fontWeight={700} sx={{ marginBottom: "20px" }}>
           나의 대표 반려식물
         </Typography>
 
+
         <CardWrap>
-          <PlantsCard />
-          <PlantsCard />
-          <PlantsCard />
+          {isPlantsLoading ? (
+            <>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonPlantsCard key={index} variant="rectangular" />
+              ))}
+            </>
+          ) : (
+            <>
+              <PlantsCard />
+              <PlantsCard />
+              <PlantsCard />
+              <PlantsCard />
+              <PlantsCard />
+            </>
+          )}
         </CardWrap>
       </UserPlantsContents>
     </ContentsWrap>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Box, IconButton, Modal, Typography, styled, Divider } from "@mui/material";
+import { Box, IconButton, Modal, Typography, styled, Divider, Skeleton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
-import EditFields from "./EditFields";
+import EditFields, { SkeletonField } from "./EditFields";
 
 type PlantsInformModalProps = {
   open: boolean;
@@ -21,6 +21,8 @@ const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
   const [desc, setDesc] = useState("");
   const [status, setStatus] = useState("");
   const [caution, setCaution] = useState("");
+
+  const isLoading = true;
 
   const handleToggleMenu = () => setMenuOpen((v) => !v);
 
@@ -68,19 +70,31 @@ const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
             <Title>식물이름</Title>
 
             {/* 이미지 */}
-            <ImageCard>
-              <img src="/src/assets/platEx01.png" alt="식물" />
-            </ImageCard>
+            {isLoading ? (
+              <SkeletonImageCard variant="rectangular" />
+            ) : (
+              <ImageCard>
+                <img src="/src/assets/platEx01.png" alt="식물" />
+              </ImageCard>
+            )}
 
             {/* 필드 */}
             <Form>
-              <EditFields label="식물이름" value={name} />
-
-              <EditFields label="설명" value={desc} />
-
-              <EditFields label="상태" value={status} />
-
-              <EditFields label="주의사항" value={caution} />
+              {isLoading ? (
+                <>
+                  <SkeletonField />
+                  <SkeletonField />
+                  <SkeletonField />
+                  <SkeletonField />
+                </>
+              ) : (
+                <>
+                  <EditFields label="식물이름" value={name} />
+                  <EditFields label="설명" value={desc} />
+                  <EditFields label="상태" value={status} />
+                  <EditFields label="주의사항" value={caution} />
+                </>
+              )}
             </Form>
           </Inner>
         </ModalShell>
@@ -192,6 +206,14 @@ const ImageCard = styled(Box)(({ theme }) => ({
     objectFit: "cover",
     display: "block",
   },
+}));
+
+const SkeletonImageCard = styled(Skeleton)(() => ({
+  width: "100%",
+  height: "auto",
+  borderRadius: 20,
+  overflow: "hidden",
+  aspectRatio: "4/3",
 }));
 
 const Form = styled(Box)(() => ({

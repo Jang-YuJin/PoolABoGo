@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled } from "@mui/material";
+import { Skeleton, styled } from "@mui/material";
 import PlantsInformModal from "./PlantsInformModal";
 
 // 기본 카드 컴포넌트
@@ -29,6 +29,7 @@ export default PlantsCard;
 
 const PlantsCardWrap = styled("dl")(({ theme }) => ({
   width: "calc((100% - 40px) / 3)",
+  height: "auto",
   position: "relative",
   transition: "all .3s ease",
   borderRadius: "20px",
@@ -120,5 +121,21 @@ const ShowIcon = styled("dd")(({ theme }) => ({
     "& svg": {
       fill: theme.palette.primary.main,
     },
+  },
+}));
+
+export const SkeletonPlantsCard = styled(Skeleton)(({ theme }) => ({
+  width: "calc((100% - 40px) / 3)",
+  height: "auto",
+  aspectRatio: "1/1",
+
+  borderRadius: "20px",
+
+  [theme.breakpoints.down("md")]: {
+    width: "calc((100% - 30px) / 3)",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    width: "calc((100% - 15px) / 2)",
   },
 }));

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Box, styled, Typography } from "@mui/material";
-import EditFields from "../../../common/components/EditFields";
+import { useEffect, useState } from "react";
+import { Box, Skeleton, styled, Typography } from "@mui/material";
+import EditFields, { SkeletonField } from "../../../common/components/EditFields";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,8 @@ const ShowPlantsInformResult = ({ imageFile }: ShowPlantsInformResultProps) => {
   const [desc] = useState("");
   const [status] = useState("");
   const [caution] = useState("");
+
+  const isLoading = true;
 
   // 이미지 파일 가져오기
   const [plantsImageUrl, setPlantsImageUrl] = useState<string | null>(null);
@@ -43,17 +45,32 @@ const ShowPlantsInformResult = ({ imageFile }: ShowPlantsInformResultProps) => {
 
       <Wrapper>
         {/* 왼쪽영역 */}
-        <ImgBox>
-          {/* 추가한 이미지가 여기 보여짐 */}
-          {plantsImageUrl && <img src={plantsImageUrl} alt="업로드한 식물 이미지" />}
-        </ImgBox>
+        {isLoading ? (
+          <SkeletonImgBox variant="rectangular" />
+        ) : (
+          <ImgBox>
+            {/* 추가한 이미지가 여기 보여짐 */}
+            {plantsImageUrl && <img src={plantsImageUrl} alt="업로드한 식물 이미지" />}
+          </ImgBox>
+        )}
 
         {/* 오른쪽 영역 */}
         <ResultBox>
-          <EditFields label="식물이름" value={name} />
-          <EditFields label="설명" value={desc} />
-          <EditFields label="상태" value={status} />
-          <EditFields label="주의사항" value={caution} />
+          {isLoading ? (
+            <>
+              <SkeletonField />
+              <SkeletonField />
+              <SkeletonField />
+              <SkeletonField />
+            </>
+          ) : (
+            <>
+              <EditFields label="식물이름" value={name} />
+              <EditFields label="설명" value={desc} />
+              <EditFields label="상태" value={status} />
+              <EditFields label="주의사항" value={caution} />
+            </>
+          )}
         </ResultBox>
       </Wrapper>
 
@@ -112,6 +129,13 @@ const ImgBox = styled(Box)(() => ({
     height: "auto",
     objectFit: "cover",
   },
+}));
+
+const SkeletonImgBox = styled(Skeleton)(() => ({
+  width: "100%",
+  height: "auto",
+  borderRadius:"20px",
+  objectFit: "cover",
 }));
 
 const ResultBox = styled(Box)(({ theme }) => ({

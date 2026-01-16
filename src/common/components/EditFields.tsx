@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, styled } from "@mui/material";
+import { Box, Skeleton, Typography, styled } from "@mui/material";
 
 type EditFieldsProps = {
   label: string;
@@ -19,6 +19,19 @@ const EditFields = ({ label, value }: EditFieldsProps) => {
 };
 
 export default EditFields;
+
+export const SkeletonField = () => {
+  return (
+    <Field>
+      <Label>
+        <Skeleton variant="text" width="50%" height="100%" />
+      </Label>
+      <ValueText>
+        <Skeleton variant="text" width="100%" height="100%" />
+      </ValueText>
+    </Field>
+  );
+}
 
 // 스타일드 컴포넌트
 const Field = styled(Box)(() => ({

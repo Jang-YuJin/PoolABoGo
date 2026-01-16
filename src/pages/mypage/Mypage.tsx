@@ -10,7 +10,7 @@ const MyPage = () => {
 
   return (
     <div>
-      <Typography variant="h1" sx={{ marginBottom: "20px" }}>나의 반려식물 둘러보기</Typography>
+      <Typography variant="h1">나의 반려식물 둘러보기</Typography>
 
       <CardWrap>
         {isPlantsLoading ? (
@@ -40,7 +40,7 @@ const CardWrap = styled("div")(({ theme }) => ({
   flexWrap: "wrap",
   gap: "20px",
 
-  marginTop: "40",
+  marginTop: "40px",
 
   [theme.breakpoints.down("md")]: {
     marginTop: "30px",

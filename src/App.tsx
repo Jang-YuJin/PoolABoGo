@@ -6,19 +6,18 @@ const MainPage = React.lazy(() => import('./pages/main/MainPage'));
 const RecordPage = React.lazy(() => import('./pages/record/RecordPage'));
 const MyPage = React.lazy(() => import('./pages/mypage/Mypage'));
 const ErrorPage = React.lazy(() => import('./pages/ErrorPage'));
-
-const LoadingFallback = <div style={{ padding: '20px' }}>Loading...</div>;
+const LoadingPage = React.lazy(() => import('./pages/LoadingPage'));
 
 export const routes = [
   {
     path: '/',
     element: (
-      <Suspense fallback={LoadingFallback}>
+      <Suspense fallback={<LoadingPage />}>
         <AppLayout />
       </Suspense>
     ),
     errorElement: (
-      <Suspense fallback={LoadingFallback}>
+      <Suspense fallback={<LoadingPage />}>
         <ErrorPage />
       </Suspense>
     ),
@@ -26,7 +25,7 @@ export const routes = [
       {
         index: true,
         element: (
-          <Suspense fallback={LoadingFallback}>
+          <Suspense fallback={<LoadingPage />}>
             <MainPage />
           </Suspense>
         ),
@@ -34,7 +33,7 @@ export const routes = [
       {
         path: 'record',
         element: (
-          <Suspense fallback={LoadingFallback}>
+          <Suspense fallback={<LoadingPage />}>
             <RecordPage />
           </Suspense>
         ),
@@ -42,7 +41,7 @@ export const routes = [
       {
         path: 'mypage',
         element: (
-          <Suspense fallback={LoadingFallback}>
+          <Suspense fallback={<LoadingPage />}>
             <MyPage />
           </Suspense>
         ),

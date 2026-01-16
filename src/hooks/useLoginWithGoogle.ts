@@ -1,9 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginWithGoogle } from "../services/authService";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useLoginWithGoogle = () => {
+  const queryClient = useQueryClient();
+  
   return useMutation({
     mutationFn: loginWithGoogle,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["auth", "profile"] });
+    },
     onError: (err: unknown) => {
       const authError = err as { code?: string };
       if (authError?.code === "auth/popup-closed-by-user") {

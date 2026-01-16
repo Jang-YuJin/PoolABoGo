@@ -2,6 +2,10 @@ import React from "react";
 import { styled, Typography } from "@mui/material";
 import PlantsCard from "../../common/components/PlantsCard";
 
+// 마이페이지
+// 로그인한 유저만 접근 가능, 로그인 안 되어 있으면 로그인으로 리다이렉션
+// 저장된 나의 반려식물 카드 보임-> 무한스크롤구현
+// 카드는 pc : 3 / tablet : 2 / mo : 1 씩 보임
 const MyPage = () => {
   return (
     <div>
@@ -32,10 +36,12 @@ const CardWrap = styled("div")(({ theme }) => ({
   marginTop: "40",
 
   [theme.breakpoints.down("md")]: {
+    marginTop: "30px",
     gap: "15px",
   },
 
   [theme.breakpoints.down("sm")]: {
-    gap: "15px",
+    marginTop: "20px",
+    gap: "12px",
   },
 }));

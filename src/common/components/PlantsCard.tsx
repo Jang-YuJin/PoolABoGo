@@ -100,6 +100,16 @@ const ShowIcon = styled("dd")(({ theme }) => ({
 
   transition: "all .3s ease",
 
+  [theme.breakpoints.down("md")]: {
+    width: "48px",
+    height: "48px",
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    width: "35px",
+    height: "35px",
+  },
+
   "& svg": {
     fill: theme.palette.background.paper,
   },

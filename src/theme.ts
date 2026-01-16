@@ -55,6 +55,8 @@ const baseTheme = createTheme({
     },
     subtitle1: {
       fontSize: "1.111rem",
+      marginTop: "16px",
+      color: COLORS.basic,
     },
   },
 });

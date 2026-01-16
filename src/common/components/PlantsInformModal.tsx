@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { Box, IconButton, Modal, Typography, styled, Divider, Skeleton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import EditFields, { SkeletonField } from "./EditFields";
+import type { PlantRecord } from "../../models/record";
 
 type PlantsInformModalProps = {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  record: PlantRecord;
+  isLoading?: boolean;
 };
 
-const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
+const PlantsInformModal = ({
+  open,
+  setOpen,
+  record,
+  isLoading = false,
+}: PlantsInformModalProps) => {
   // 닫기 로직은 모달 내부
   const handleClose = () => setOpen(false);
 
@@ -22,7 +30,13 @@ const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
   const [status, setStatus] = useState("");
   const [caution, setCaution] = useState("");
 
-  const isLoading = true;
+  useEffect(() => {
+    if (!open) return;
+    setName(record.plantName ?? "");
+    setDesc(record.plantDesc ?? "");
+    setStatus(record.plantStatus ?? "");
+    setCaution(record.plantCaution ?? "");
+  }, [open, record]);
 
   const handleToggleMenu = () => setMenuOpen((v) => !v);
 
@@ -67,14 +81,14 @@ const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
 
           <Inner>
             {/* 타이틀 */}
-            <Title>식물이름</Title>
+            <Title>{record.plantName}</Title>
 
             {/* 이미지 */}
             {isLoading ? (
               <SkeletonImageCard variant="rectangular" />
             ) : (
               <ImageCard>
-                <img src="/src/assets/platEx01.png" alt="식물" />
+                <img src={record.plantImg} alt={name || record.plantName} />
               </ImageCard>
             )}
 

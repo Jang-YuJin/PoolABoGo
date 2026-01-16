@@ -6,4 +6,4 @@ export const useGetUserProfile = () => {
     queryKey: ["auth", "profile"],
     queryFn: getUserProfile,
   });
-}
+};

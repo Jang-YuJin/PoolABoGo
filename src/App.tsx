@@ -4,7 +4,7 @@ import './App.css'
 const AppLayout = React.lazy(() => import('./layouts/AppLayout')); // 오타 수정: laylouts -> layouts
 const MainPage = React.lazy(() => import('./pages/main/MainPage'));
 const RecordPage = React.lazy(() => import('./pages/record/RecordPage'));
-const MyPage = React.lazy(() => import('./pages/mypage/MyPage'));
+const MyPage = React.lazy(() => import('./pages/mypage/Mypage'));
 const ErrorPage = React.lazy(() => import('./pages/ErrorPage'));
 
 const LoadingFallback = <div style={{ padding: '20px' }}>Loading...</div>;

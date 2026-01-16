@@ -1,30 +1,57 @@
-import React, { Suspense } from "react";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import AiSample from './pages/aiSample/AiSample';
+import React, { Suspense } from 'react'
+import './App.css'
 
-const AppLayout = React.lazy(() => import("./layouts/AppLayout"));
-const MainPage = React.lazy(() => import("./pages/main/MainPage"));
-const RecordPage = React.lazy(() => import("./pages/record/RecordPage"));
-const MyPage = React.lazy(() => import("./pages/mypage/Mypage"));
+const AppLayout = React.lazy(() => import('./layouts/AppLayout')); // 오타 수정: laylouts -> layouts
+const MainPage = React.lazy(() => import('./pages/main/MainPage'));
+const RecordPage = React.lazy(() => import('./pages/record/RecordPage'));
+const MyPage = React.lazy(() => import('./pages/mypage/Mypage'));
+const ErrorPage = React.lazy(() => import('./pages/ErrorPage'));
+const LoadingPage = React.lazy(() => import('./pages/LoadingPage'));
 
-// 메인 '/'
-// 기록 '/record'
-// 마이페이지 '/maypage'
+export const routes = [
+  {
+    path: '/',
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <AppLayout />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<LoadingPage />}>
+        <ErrorPage />
+      </Suspense>
+    ),
+    children: [
+      {
+        index: true,
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <MainPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'record',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <RecordPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'mypage',
+        element: (
+          <Suspense fallback={<LoadingPage />}>
+            <MyPage />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+];
 
 function App() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<AppLayout></AppLayout>}>
-          <Route index element={<MainPage></MainPage>}></Route>
-          <Route path="/record" element={<RecordPage></RecordPage>}></Route>
-          <Route path="/mypage" element={<MyPage></MyPage>}></Route>
-          <Route path='/ai' element={<AiSample></AiSample>}></Route>
-        </Route>
-      </Routes>
-    </Suspense>
-  );
+  return null;
 }
 
 export default App;

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Box, styled, Typography } from "@mui/material";
-import EditFields from "../../../common/components/EditFields";
+import { useEffect, useState } from "react";
+import { Box, Skeleton, styled, Typography } from "@mui/material";
+import EditFields, { SkeletonField } from "../../../common/components/EditFields";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 import type { AiResponse } from "../../../models/ai";
@@ -65,21 +65,33 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
 
       <Wrapper>
         {/* 왼쪽영역 */}
-        <ImgBox>
-          {/* 추가한 이미지가 여기 보여짐 */}
-          {plantsImageUrl && <img src={plantsImageUrl} alt="업로드한 식물 이미지" />}
-        </ImgBox>
+        {isLoading ? (
+          <SkeletonImgBox variant="rectangular" />
+        ) : (
+          <ImgBox>
+            {/* 추가한 이미지가 여기 보여짐 */}
+            {plantsImageUrl && <img src={plantsImageUrl} alt="업로드한 식물 이미지" />}
+          </ImgBox>
+        )}
 
         {/* 오른쪽 영역 */}
-        {isLoading
-        ? <div>Loading...</div>
-        : <ResultBox>
-            <EditFields label="식물이름" value={name} />
-            <EditFields label="설명" value={desc} />
-            <EditFields label="상태" value={status} />
-            <EditFields label="주의사항" value={caution} />
-          </ResultBox>}
-        
+        <ResultBox>
+          {isLoading ? (
+            <>
+              <SkeletonField />
+              <SkeletonField />
+              <SkeletonField />
+              <SkeletonField />
+            </>
+          ) : (
+            <>
+              <EditFields label="식물이름" value={name} />
+              <EditFields label="설명" value={desc} />
+              <EditFields label="상태" value={status} />
+              <EditFields label="주의사항" value={caution} />
+            </>
+          )}
+        </ResultBox>
       </Wrapper>
 
       <ButtonWrap>
@@ -137,6 +149,13 @@ const ImgBox = styled(Box)(() => ({
     height: "auto",
     objectFit: "cover",
   },
+}));
+
+const SkeletonImgBox = styled(Skeleton)(() => ({
+  width: "100%",
+  height: "auto",
+  borderRadius:"20px",
+  objectFit: "cover",
 }));
 
 const ResultBox = styled(Box)(({ theme }) => ({

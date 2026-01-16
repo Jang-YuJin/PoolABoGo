@@ -4,7 +4,7 @@ import getPlantInfo from "../apis/geminiAiApi/geminiAiApi";
 
 const useGetAiResponse = (img?: File): UseQueryResult<AiResponse, Error> => {
     return useQuery({
-        queryKey: ['get-ai-response', img?.name],
+        queryKey: ['get-ai-response', img],
         queryFn: () => {
             if(!img){
                 throw new Error('No Image!');

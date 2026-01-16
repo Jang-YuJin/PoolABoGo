@@ -9,7 +9,7 @@ import type { AiResponse } from "../../models/ai";
 const answerSchema = z.object({
   plantName: z.string().describe('식물의 이름'),
   plantDesc: z.string().describe('식물에 대한 설명'),
-  plantStatus: z.string().describe('식물의 상태, 1/2/3으로 구분하며 1이 좋은 상태, 2는 보통, 3은 나쁜 상태를 의미'),
+  plantStatus: z.string().describe('식물의 상태, healthy/warning/critical로 구분하며 healthys는 건강, warning은 주의, critical은 위험 상태를 의미'),
   plantCaution: z.string().describe('식물을 키우면서 주의해야하는 사항')
 })
 
@@ -18,7 +18,7 @@ const ai = new GoogleGenAI({apiKey: GEMINI_AI_KEY});
 
 const prompt = `당신은 식물에 대해서 아주 잘 알고있는 저명한 식물학 교수입니다.
 보내준 이미지의 식물이 어떤 식물인지 알려주고 이 식물에 대한 간단한 설명을 100자 내외로 해주세요.
-그리고 이 식물의 상태가 좋은지 나쁜지 1~3으로 구분을 지어서 알려주세요. 1은 가장 좋은 상태, 2는 보통 상태, 3은 식물의 상태가 나쁜 것을 의미합니다.
+그리고 이 식물의 상태가 좋은지 나쁜지 healthy/warning/critical로 구분을 지어서 알려주세요. healthys는 건강, warning은 주의, critical은 위험 상태를 의미합니다.
 또한 이 식물을 키우면서 주의해야하는 사항을 300자 내외로 알려주세요.
 답변은 반드시 아래 JSON 스키마의 key 이름을 그대로 사용해서 응답하세요.
 key를 번역하거나 변경하지 마세요.

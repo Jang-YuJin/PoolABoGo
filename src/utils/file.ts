@@ -7,10 +7,22 @@ export const fileToBase64 = async (file: File): Promise<string> => {
   }
 
   // Browser 환경
-  const uint8Array = new Uint8Array(arrayBuffer);
-  let binary = "";
-  for (let i = 0; i < uint8Array.length; i++) {
-    binary += String.fromCharCode(uint8Array[i]);
-  }
-  return btoa(binary);
+  return new Promise<string>((resolve, reject) => {
+    const blob: Blob = new Blob([arrayBuffer]);
+    const reader: FileReader = new FileReader();
+
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result === "string") {
+        const base64 = result.split(",")[1];
+        resolve(base64);
+      } else {
+        reject(new Error("FileReader result is not a string"));
+      }
+    };
+
+    reader.onerror = () => reject(reader.error);
+
+    reader.readAsDataURL(blob);
+  });
 };

@@ -3,32 +3,54 @@ import { Box, styled, Typography } from "@mui/material";
 import EditFields from "../../../common/components/EditFields";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
+import type { AiResponse } from "../../../models/ai";
+import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 type ShowPlantsInformResultProps = {
   imageFile: File;
+  aiResponse: AiResponse | undefined;
+  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<AiResponse, Error>>
+  isLoading: boolean;
 };
 
 // 분석이 완료된 식물사진에 대한 결과를 보여주는 컴포넌트
-const ShowPlantsInformResult = ({ imageFile }: ShowPlantsInformResultProps) => {
+const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: ShowPlantsInformResultProps) => {
   const navigate = useNavigate();
 
   // 입력 값 상태 (더미값)
-  const [name] = useState("");
-  const [desc] = useState("");
-  const [status] = useState("");
-  const [caution] = useState("");
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
+  const [status, setStatus] = useState("");
+  const [caution, setCaution] = useState("");
 
   // 이미지 파일 가져오기
   const [plantsImageUrl, setPlantsImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    if(!imageFile){
+      return;
+    }
+
     const url = URL.createObjectURL(imageFile);
     setPlantsImageUrl(url);
+
+    refetch();
 
     return () => {
       URL.revokeObjectURL(url);
     };
   }, [imageFile]);
+
+  useEffect(() => {
+    if(!aiResponse){
+      return;
+    }
+
+    setName(aiResponse.plantName);
+    setDesc(aiResponse.plantDesc);
+    setStatus(aiResponse.plantStatus.toString());
+    setCaution(aiResponse.plantCaution);
+  }, [aiResponse]);
 
   const saveData = () => {
     // 데이터 저장 로직
@@ -49,12 +71,15 @@ const ShowPlantsInformResult = ({ imageFile }: ShowPlantsInformResultProps) => {
         </ImgBox>
 
         {/* 오른쪽 영역 */}
-        <ResultBox>
-          <EditFields label="식물이름" value={name} />
-          <EditFields label="설명" value={desc} />
-          <EditFields label="상태" value={status} />
-          <EditFields label="주의사항" value={caution} />
-        </ResultBox>
+        {isLoading
+        ? <div>Loading...</div>
+        : <ResultBox>
+            <EditFields label="식물이름" value={name} />
+            <EditFields label="설명" value={desc} />
+            <EditFields label="상태" value={status} />
+            <EditFields label="주의사항" value={caution} />
+          </ResultBox>}
+        
       </Wrapper>
 
       <ButtonWrap>

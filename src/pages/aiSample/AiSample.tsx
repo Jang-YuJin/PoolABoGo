@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useGetAiResponse from '../../hooks/useGetAiResponse';
 
 const AiSample = () => {
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [plantsImageUrl , setPlantsImageUrl ] = useState<string>('');
   const [file, setFile] = useState<File | undefined>(undefined);
   const {data, isLoading, refetch} = useGetAiResponse(file);
 
@@ -11,7 +11,7 @@ const AiSample = () => {
     if (selectedFile) {
       setFile(selectedFile);
       const url = URL.createObjectURL(selectedFile);
-      setPreviewUrl(url);
+      setPlantsImageUrl(url);
     }
   };
 
@@ -25,7 +25,7 @@ const AiSample = () => {
     <div>
       <div>
         <input type="file" accept="image/*" onChange={handleImageChange} />
-        {previewUrl && <img src={previewUrl} alt="Preview" style={{ width: '200px', marginTop: '10px' }} />}
+        {plantsImageUrl  && <img src={plantsImageUrl } alt="Preview" style={{ width: '200px', marginTop: '10px' }} />}
         <button onClick={handleSubmit} disabled={!file}>
           업로드
         </button>

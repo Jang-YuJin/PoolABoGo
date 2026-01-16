@@ -1,30 +1,24 @@
-import { initializeApp, type FirebaseApp } from "firebase/app";
-import { getAuth, type Auth } from "firebase/auth";
+import { initializeApp, getApp, getApps, type FirebaseApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import { firebaseConfig } from "../configs/firebaseConfig";
 
 // Firebase 환경 변수 유효성 검사
-const isConfigValid = firebaseConfig.apiKey !== undefined && firebaseConfig.projectId !== undefined;
+const requiredKeys = ["apiKey", "authDomain", "projectId", "storageBucket", "messagingSenderId", "appId"] as const;
+const missingKeys = requiredKeys.filter((key) => !firebaseConfig[key]);
 
-if (!isConfigValid) {
-  throw new Error('Firebase 환경 변수가 설정되지 않았습니다. .env 파일을 확인해주세요.');
+if (missingKeys.length > 0) {
+  throw new Error(`Firebase 환경 변수가 설정되지 않았습니다: ${missingKeys.join(", ")}`);
 }
 
 // Firebase 초기화
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-let storage: FirebaseStorage;
+const app: FirebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-try {
-  app = initializeApp(firebaseConfig); // Firebase 
-  auth = getAuth(app); // Firebase Auth 
-  db = getFirestore(app); // Firebase Firestore 
-  storage = getStorage(app); // Firebase Storage 
-} catch (error) {
-  console.error('Firebase 초기화 오류:', error);
-  throw new Error('Firebase 초기화에 실패했습니다. Firebase 환경 변수를 확인해주세요.');
-}
+// let보다는 const로 불변성 확보하는 것이 좋음
+const auth: Auth = getAuth(app);
+const db: Firestore = getFirestore(app);
+const storage: FirebaseStorage = getStorage(app);
+const googleProvider = new GoogleAuthProvider();
 
-export { auth, db, storage };
+export { auth, googleProvider, db, storage, app };

@@ -1,16 +1,18 @@
-import React, { Suspense } from 'react'
-import './App.css'
+import React, { Suspense } from "react";
+import "./App.css";
+import RedirectToGoogleLogin from "./pages/RedirectToGoogleLogin";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
-const AppLayout = React.lazy(() => import('./layouts/AppLayout')); // 오타 수정: laylouts -> layouts
-const MainPage = React.lazy(() => import('./pages/main/MainPage'));
-const RecordPage = React.lazy(() => import('./pages/record/RecordPage'));
-const MyPage = React.lazy(() => import('./pages/mypage/Mypage'));
-const ErrorPage = React.lazy(() => import('./pages/ErrorPage'));
-const LoadingPage = React.lazy(() => import('./pages/LoadingPage'));
+const AppLayout = React.lazy(() => import("./layouts/AppLayout")); // 오타 수정: laylouts -> layouts
+const MainPage = React.lazy(() => import("./pages/main/MainPage"));
+const RecordPage = React.lazy(() => import("./pages/record/RecordPage"));
+const MyPage = React.lazy(() => import("./pages/mypage/Mypage"));
+const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
+const LoadingPage = React.lazy(() => import("./pages/LoadingPage"));
 
 export const routes = [
   {
-    path: '/',
+    path: "/",
     element: (
       <Suspense fallback={<LoadingPage />}>
         <AppLayout />
@@ -31,19 +33,31 @@ export const routes = [
         ),
       },
       {
-        path: 'record',
+        path: "record",
         element: (
           <Suspense fallback={<LoadingPage />}>
             <RecordPage />
           </Suspense>
         ),
       },
+      // 로그인 중계
       {
-        path: 'mypage',
+        path: "auth",
         element: (
           <Suspense fallback={<LoadingPage />}>
-            <MyPage />
+            <RedirectToGoogleLogin />
           </Suspense>
+        ),
+      },
+      // 로그인 유저만 mypage
+      {
+        path: "mypage",
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<LoadingPage />}>
+              <MyPage />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
     ],

@@ -6,6 +6,9 @@ import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import { useLogout } from "../../hooks/useLogout";
 import { useLoginWithGoogle } from "../../hooks/useLoginWithGoogle";
 
+// 로고 이미지
+import logo from "@/assets/logo.png";
+
 // 페이지 상단 헤더 컴포넌트
 const Header = () => {
   const navigate = useNavigate();
@@ -56,7 +59,7 @@ const Header = () => {
       <HeaderInner>
         {/* 로고 */}
         <Link to="/">
-          <img src="/src/assets/logo.png" alt="로고" />
+          <img src={logo} alt="로고" />
         </Link>
 
         {/* 로그인 */}

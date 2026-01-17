@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Box, Skeleton, styled, Typography, Alert } from "@mui/material";
 import EditFields, { SkeletonField } from "../../../common/components/EditFields";
 import PrimaryButton from "../../../common/components/PrimaryButton";
-import { useNavigate } from "react-router-dom";
 import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useGetUserProfile } from "../../../hooks/useGetUserProfile";
 import useCreatePlantRecord from "../../../hooks/useCreatePlantRecord";
@@ -24,7 +23,6 @@ const ShowPlantsInformResult = ({
   refetch,
   isLoading,
 }: ShowPlantsInformResultProps) => {
-  const navigate = useNavigate();
   const { data: user } = useGetUserProfile();
   const { mutate: createPlantRecord } = useCreatePlantRecord();
 

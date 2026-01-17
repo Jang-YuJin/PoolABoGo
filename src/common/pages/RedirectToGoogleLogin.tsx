@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthUser } from "../hooks/useAuthUser";
-import { useLoginWithGoogle } from "../hooks/useLoginWithGoogle";
+import { useGetUserProfile } from "../../hooks/useGetUserProfile";
+import { useLoginWithGoogle } from "../../hooks/useLoginWithGoogle";
 
 type LocationState = { from?: string };
 
@@ -11,7 +11,7 @@ const RedirectToGoogleLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { user, loading } = useAuthUser();
+  const { data: user, isLoading: loading } = useGetUserProfile();
   const { mutate: loginWithGoogle, isPending } = useLoginWithGoogle();
 
   const from = useMemo(() => {

@@ -1,14 +1,14 @@
 import React, { Suspense } from "react";
 import "./App.css";
-import RedirectToGoogleLogin from "./pages/RedirectToGoogleLogin";
+import RedirectToGoogleLogin from "./common/pages/RedirectToGoogleLogin";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 const AppLayout = React.lazy(() => import("./layouts/AppLayout")); // 오타 수정: laylouts -> layouts
-const MainPage = React.lazy(() => import("./pages/main/MainPage"));
-const RecordPage = React.lazy(() => import("./pages/record/RecordPage"));
-const MyPage = React.lazy(() => import("./pages/mypage/Mypage"));
-const ErrorPage = React.lazy(() => import("./pages/ErrorPage"));
-const LoadingPage = React.lazy(() => import("./pages/LoadingPage"));
+const MainPage = React.lazy(() => import("./pages/MainPage/MainPage"));
+const RecordPage = React.lazy(() => import("./pages/RecordPage/RecordPage"));
+const MyPage = React.lazy(() => import("./pages/MyPage/Mypage"));
+const ErrorPage = React.lazy(() => import("./common/pages/ErrorPage"));
+const LoadingPage = React.lazy(() => import("./common/pages/LoadingPage"));
 
 export const routes = [
   {

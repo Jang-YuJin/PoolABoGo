@@ -1,8 +1,9 @@
 import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { Skeleton, styled } from "@mui/material";
 import PlantsInformModal from "./PlantsInformModal";
-import type { PlantRecord } from "../../models/record";
+import type { PlantRecord } from "../../models/plantRecord";
 
 // 기본 카드 컴포넌트
 type PlantsCardProps = { record: PlantRecord };
@@ -16,6 +17,11 @@ const PlantsCard = ({ record }: PlantsCardProps) => {
       <PlantsCardWrap>
         <PlantsImageWrap>
           <img src={record.thumbnailImg} alt={record.plantName} />
+          {record.isBookmarked && (
+            <BookmarkBadge className="bookmark-badge">
+              <BookmarkIcon />
+            </BookmarkBadge>
+          )}
         </PlantsImageWrap>
         <ShowIcon>
           <SearchIcon onClick={() => setOpen(true)} />
@@ -56,6 +62,11 @@ const PlantsCardWrap = styled("dl")(({ theme }) => ({
     "& dd": {
       opacity: 100,
     },
+
+    "& .bookmark-badge": {
+      opacity: 0,
+      pointerEvents: "none",
+    },
   },
 }));
 
@@ -79,6 +90,42 @@ const PlantsImageWrap = styled("dt")(() => ({
     top: "0",
     left: "0",
     position: "absolute",
+  },
+}));
+
+const BookmarkBadge = styled("div")(({ theme }) => ({
+  position: "absolute",
+  top: "12px",
+  right: "12px",
+  zIndex: 2,
+  width: "32px",
+  height: "32px",
+  borderRadius: "50%",
+  backgroundColor: theme.palette.primary.main,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+  opacity: 1,
+  transition: "opacity 0.3s ease",
+  pointerEvents: "auto",
+
+  "& svg": {
+    width: "20px",
+    height: "20px",
+    fill: theme.palette.background.paper,
+  },
+
+  [theme.breakpoints.down("sm")]: {
+    width: "28px",
+    height: "28px",
+    top: "8px",
+    right: "8px",
+
+    "& svg": {
+      width: "18px",
+      height: "18px",
+    },
   },
 }));
 

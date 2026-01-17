@@ -1,16 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
-import { toggleBookmarkById } from "../services/bookmarkService";
+import type { CreatePlantRecordParams } from "../models/plantRecord";
+import { createPlantRecord } from "../services/plantRecordService";
 import { useQueryClient } from "@tanstack/react-query";
 
-const useToggleBookmarkById = () => {
+const useCreatePlantRecord = () => {
     const queryClient = useQueryClient();
+
     return useMutation({
-        mutationFn: (docId: string) => toggleBookmarkById(docId),
+        mutationFn: (params: CreatePlantRecordParams) => createPlantRecord(params),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["bookmarkedPlants"] });
             queryClient.invalidateQueries({ queryKey: ["plantRecords"] });
         },
     });
 };
 
-export default useToggleBookmarkById;
+export default useCreatePlantRecord;

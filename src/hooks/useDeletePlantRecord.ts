@@ -1,14 +1,14 @@
 // 유저의 식물 데이터 삭제하기
 // hooks/useDeletePlantRecord.ts
 import { useMutation, useQueryClient, type InfiniteData } from "@tanstack/react-query";
-import type { PlantRecord } from "../models/record";
-import deleteUserPlantsRecords from "../services/deleteUserPlantsRecords";
+import type { PlantRecord } from "../models/plantRecord";
+import { deletePlantRecord } from "../services/plantRecordService";
 
 export function useDeletePlantRecord(userId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (recordId: string) => deleteUserPlantsRecords(recordId),
+    mutationFn: (recordId: string) => deletePlantRecord(recordId),
 
     onSuccess: (_data, recordId) => {
 

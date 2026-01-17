@@ -6,7 +6,7 @@ import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import { useLogout } from "../../hooks/useLogout";
 import { useLoginWithGoogle } from "../../hooks/useLoginWithGoogle";
 
-// 로고 이미지
+// 풀어보고 로고 이미지
 import logo from "@/assets/logo.png";
 
 // 페이지 상단 헤더 컴포넌트

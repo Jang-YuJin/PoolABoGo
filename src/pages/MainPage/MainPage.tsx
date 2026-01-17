@@ -8,6 +8,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import useGetBookmarkedPlants from "../../hooks/useGetBookmarkedPlants";
 
+// 메인페이지 이미지
 import MainPageImage from "@/assets/mainImage.png";
 
 // 메인페이지

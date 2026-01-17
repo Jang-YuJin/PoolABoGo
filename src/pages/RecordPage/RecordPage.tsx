@@ -1,4 +1,3 @@
-//       setImageFile(file);
 import { useState } from "react";
 import PlantsImageUploader from "./components/PlantsImageUploader";
 import ShowPlantsInformResult from "./components/ShowPlantsInformResult";

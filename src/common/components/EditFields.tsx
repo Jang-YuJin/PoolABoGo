@@ -31,7 +31,7 @@ export const SkeletonField = () => {
       </ValueText>
     </Field>
   );
-}
+};
 
 // 스타일드 컴포넌트
 const Field = styled(Box)(() => ({
@@ -53,6 +53,7 @@ const ValueText = styled("p")(({ theme }) => ({
   background: theme.palette.background.default,
   color: theme.palette.text.primary,
   fontSize: "1.222rem",
+  textTransform: "uppercase",
   "&[data-empty='true']": {
     // 데이터 값이 없을 때
     opacity: 0.7,

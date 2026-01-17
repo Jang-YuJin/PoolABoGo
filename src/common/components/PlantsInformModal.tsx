@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { Box, IconButton, Modal, Typography, styled, Divider, Skeleton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import EditFields, { SkeletonField } from "./EditFields";
 import type { PlantRecord } from "../../models/record";
 import useToggleBookmarkById from "../../hooks/useToggleBookmarkById";
+import { useDeletePlantRecord } from "../../hooks/useDeletePlantRecord";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 type PlantsInformModalProps = {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  plant: PlantRecord;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  record: PlantRecord;
+  isLoading?: boolean;
 };
 
-const PlantsInformModal = ({ open, setOpen, plant }: PlantsInformModalProps) => {
-  const { mutate: toggleBookmarkById } = useToggleBookmarkById();
-
+const PlantsInformModal = ({
+  open,
+  setOpen,
+  record,
+  isLoading = false,
+}: PlantsInformModalProps) => {
   // 닫기 로직은 모달 내부
   const handleClose = () => setOpen(false);
 
@@ -27,28 +33,59 @@ const PlantsInformModal = ({ open, setOpen, plant }: PlantsInformModalProps) => 
   const [status, setStatus] = useState("");
   const [caution, setCaution] = useState("");
 
-  const isLoading = true;
+  useEffect(() => {
+    if (!open) return;
+    setName(record.plantName ?? "");
+    setDesc(record.plantDesc ?? "");
+    setStatus(record.plantStatus ?? "");
+    setCaution(record.plantCaution ?? "");
+  }, [open, record]);
 
+  // 모달 열기 핸들러
   const handleToggleMenu = () => setMenuOpen((v) => !v);
 
+  // 모달 닫기 핸들러
+  const handleModalClose = () => {
+    setMenuOpen(false);
+    handleClose();
+  };
+  
+  // 
+  const { mutate: toggleBookmarkById } = useToggleBookmarkById();
+  
   const handleToggleBookmark = () => {
-    const plantId = plant.id;
+    const plantId = record.id;
     if (!plantId) return;
     toggleBookmarkById(plantId);
     handleClose();
   };
 
-  const handleDelete = () => {
-    setName("");
-    setDesc("");
-    setStatus("");
-    setCaution("");
-    setMenuOpen(false);
-  };
+  // 삭제
+  const { user } = useAuthUser();
+  const userId = user!.uid;
 
-  const handleModalClose = () => {
-    setMenuOpen(false);
-    handleClose();
+  const { mutate: deleteRecord, isPending: isDeleting } = useDeletePlantRecord(userId);
+
+  const handleDelete = () => {
+    if (!record.id) return;
+
+    deleteRecord(
+      {
+        recordId: record.id,
+        plantImgUrl: record.plantImg,
+        thumbnailImgUrl: record.thumbnailImg,
+      },
+      {
+        onSuccess: () => {
+          alert("삭제 되었습니다.");
+          setMenuOpen(false);
+          handleClose();
+        },
+        onError: () => {
+          setMenuOpen(false);
+        },
+      }
+    );
   };
 
   return (
@@ -68,7 +105,7 @@ const PlantsInformModal = ({ open, setOpen, plant }: PlantsInformModalProps) => 
                   <ActionItem data-danger onClick={handleToggleBookmark}>
                     북마크
                   </ActionItem>
-                  <ActionItem data-danger onClick={handleDelete}>
+                  <ActionItem data-danger onClick={handleDelete} disabled={isDeleting}>
                     삭제
                   </ActionItem>
                 </ActionMenu>
@@ -82,14 +119,14 @@ const PlantsInformModal = ({ open, setOpen, plant }: PlantsInformModalProps) => 
 
           <Inner>
             {/* 타이틀 */}
-            <Title>식물이름</Title>
+            <Title>{record.plantName}</Title>
 
             {/* 이미지 */}
             {isLoading ? (
               <SkeletonImageCard variant="rectangular" />
             ) : (
               <ImageCard>
-                <img src="/src/assets/platEx01.png" alt="식물" />
+                <img src={record.plantImg} alt={name || record.plantName} />
               </ImageCard>
             )}
 

@@ -1,21 +1,31 @@
 import { useEffect, useState } from "react";
-import { Box, Skeleton, styled, Typography } from "@mui/material";
+import { Box, Skeleton, styled, Typography, Alert } from "@mui/material";
 import EditFields, { SkeletonField } from "../../../common/components/EditFields";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
 import type { AiResponse } from "../../../models/ai";
 import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { useGetUserProfile } from "../../../hooks/useGetUserProfile";
+import { savePlantRecord } from "../../../services/plantRecordService";
 
 type ShowPlantsInformResultProps = {
   imageFile: File;
   aiResponse: AiResponse | undefined;
-  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<AiResponse, Error>>
+  refetch: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<AiResponse, Error>>;
   isLoading: boolean;
 };
 
 // 분석이 완료된 식물사진에 대한 결과를 보여주는 컴포넌트
-const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: ShowPlantsInformResultProps) => {
+const ShowPlantsInformResult = ({
+  imageFile,
+  aiResponse,
+  refetch,
+  isLoading,
+}: ShowPlantsInformResultProps) => {
   const navigate = useNavigate();
+  const { data: user } = useGetUserProfile();
 
   // 입력 값 상태 (더미값)
   const [name, setName] = useState("");
@@ -25,9 +35,14 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
 
   // 이미지 파일 가져오기
   const [plantsImageUrl, setPlantsImageUrl] = useState<string | null>(null);
+  
+  // 저장 상태
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
-    if(!imageFile){
+    if (!imageFile) {
       return;
     }
 
@@ -42,7 +57,7 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
   }, [imageFile]);
 
   useEffect(() => {
-    if(!aiResponse){
+    if (!aiResponse) {
       return;
     }
 
@@ -52,11 +67,40 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
     setCaution(aiResponse.plantCaution);
   }, [aiResponse]);
 
-  const saveData = () => {
-    // 데이터 저장 로직
+  const saveData = async () => {
+    if (!user) {
+      setSaveError("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+      return;
+    }
 
-    // 메인으로 이동
-    navigate("/");
+    if (!aiResponse || !imageFile) {
+      setSaveError("분석 결과 또는 이미지 파일이 없습니다.");
+      return;
+    }
+
+    setSaving(true);
+    setSaveError(null);
+    setSaveSuccess(false);
+
+    try {
+      await savePlantRecord({
+        imageFile,
+        userId: user.uid,
+        plantName: aiResponse.plantName,
+        plantDesc: aiResponse.plantDesc,
+        plantStatus: aiResponse.plantStatus.toString(),
+        plantCaution: aiResponse.plantCaution,
+      });
+
+      setSaveSuccess(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : "저장 중 오류가 발생했습니다.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -95,10 +139,26 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
       </Wrapper>
 
       <ButtonWrap>
-        <PrimaryButton label="기록 저장하기" onClick={saveData} />
-        <Typography variant="subtitle1">
-          로그인 후 기록을 저장하여 내 반려식물을 확인해보세요!
-        </Typography>
+        <PrimaryButton 
+          label={saving ? "저장 중..." : "기록 저장하기"} 
+          onClick={saveData}
+          disabled={saving || !user || !aiResponse}
+        />
+        {!user && (
+          <Typography variant="subtitle1" sx={{ mt: 1, color: 'text.secondary' }}>
+            로그인 후 기록을 저장하여 내 반려식물을 확인해보세요!
+          </Typography>
+        )}
+        {saveError && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {saveError}
+          </Alert>
+        )}
+        {saveSuccess && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            기록이 성공적으로 저장되었습니다!
+          </Alert>
+        )}
       </ButtonWrap>
     </div>
   );
@@ -146,15 +206,16 @@ const Wrapper = styled(Box)(({ theme }) => ({
 const ImgBox = styled(Box)(() => ({
   "& img": {
     width: "100%",
-    height: "auto",
+    height: "100%",
     objectFit: "cover",
+    aspectRatio: "1/1",
   },
 }));
 
 const SkeletonImgBox = styled(Skeleton)(() => ({
   width: "100%",
   height: "auto",
-  borderRadius:"20px",
+  borderRadius: "20px",
   objectFit: "cover",
 }));
 

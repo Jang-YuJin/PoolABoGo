@@ -5,7 +5,9 @@ import PlantsInformModal from "./PlantsInformModal";
 import type { PlantRecord } from "../../models/record";
 
 // 기본 카드 컴포넌트
-const PlantsCard = ({ plant }: { plant: PlantRecord }) => {
+type PlantsCardProps = { record: PlantRecord };
+
+const PlantsCard = ({ record }: PlantsCardProps) => {
   // 카드 클릭시 모달 오픈
   const [open, setOpen] = useState(false);
 
@@ -13,14 +15,14 @@ const PlantsCard = ({ plant }: { plant: PlantRecord }) => {
     <>
       <PlantsCardWrap>
         <PlantsImageWrap>
-          <img src={plant.thumbnailImg} alt={plant.plantName} />
+          <img src={record.thumbnailImg} alt={record.plantName} />
         </PlantsImageWrap>
         <ShowIcon>
           <SearchIcon onClick={() => setOpen(true)} />
         </ShowIcon>
       </PlantsCardWrap>
 
-      <PlantsInformModal open={open} setOpen={setOpen} plant={plant} />
+      <PlantsInformModal open={open} setOpen={setOpen} record={record} />
     </>
   );
 };

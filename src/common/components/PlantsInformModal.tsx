@@ -4,6 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import EditFields, { SkeletonField } from "./EditFields";
 import type { PlantRecord } from "../../models/record";
+import useToggleBookmarkById from "../../hooks/useToggleBookmarkById";
 import { useDeletePlantRecord } from "../../hooks/useDeletePlantRecord";
 import { useAuthUser } from "../../hooks/useAuthUser";
 
@@ -46,6 +47,16 @@ const PlantsInformModal = ({
   // 모달 닫기 핸들러
   const handleModalClose = () => {
     setMenuOpen(false);
+    handleClose();
+  };
+  
+  // 
+  const { mutate: toggleBookmarkById } = useToggleBookmarkById();
+  
+  const handleToggleBookmark = () => {
+    const plantId = record.id;
+    if (!plantId) return;
+    toggleBookmarkById(plantId);
     handleClose();
   };
 
@@ -91,6 +102,9 @@ const PlantsInformModal = ({
               {menuOpen && (
                 <ActionMenu>
                   <Divider />
+                  <ActionItem data-danger onClick={handleToggleBookmark}>
+                    북마크
+                  </ActionItem>
                   <ActionItem data-danger onClick={handleDelete} disabled={isDeleting}>
                     삭제
                   </ActionItem>

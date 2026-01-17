@@ -6,7 +6,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 const AppLayout = React.lazy(() => import("./layouts/AppLayout")); // 오타 수정: laylouts -> layouts
 const MainPage = React.lazy(() => import("./pages/MainPage/MainPage"));
 const RecordPage = React.lazy(() => import("./pages/RecordPage/RecordPage"));
-const MyPage = React.lazy(() => import("./pages/mypage/Mypage"));
+const MyPage = React.lazy(() => import("./pages/MyPage/MyPage"));
 const ErrorPage = React.lazy(() => import("./common/pages/ErrorPage"));
 const LoadingPage = React.lazy(() => import("./common/pages/LoadingPage"));
 

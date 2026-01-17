@@ -20,7 +20,6 @@ type ShowPlantsInformResultProps = {
 const ShowPlantsInformResult = ({
   imageFile,
   analysisRecord,
-  refetch,
   isLoading,
 }: ShowPlantsInformResultProps) => {
   const { data: user } = useGetUserProfile();
@@ -41,18 +40,10 @@ const ShowPlantsInformResult = ({
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
-    if (!imageFile) {
-      return;
-    }
-
+    if (!imageFile) return;
     const url = URL.createObjectURL(imageFile);
     setPlantsImageUrl(url);
-
-    refetch();
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
+    return () => URL.revokeObjectURL(url);
   }, [imageFile]);
 
   useEffect(() => {

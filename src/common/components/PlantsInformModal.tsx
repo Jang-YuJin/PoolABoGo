@@ -3,13 +3,18 @@ import { Box, IconButton, Modal, Typography, styled, Divider, Skeleton } from "@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import EditFields, { SkeletonField } from "./EditFields";
+import type { PlantRecord } from "../../models/record";
+import useToggleBookmarkById from "../../hooks/useToggleBookmarkById";
 
 type PlantsInformModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  plant: PlantRecord;
 };
 
-const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
+const PlantsInformModal = ({ open, setOpen, plant }: PlantsInformModalProps) => {
+  const { mutate: toggleBookmarkById } = useToggleBookmarkById();
+
   // 닫기 로직은 모달 내부
   const handleClose = () => setOpen(false);
 
@@ -25,6 +30,13 @@ const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
   const isLoading = true;
 
   const handleToggleMenu = () => setMenuOpen((v) => !v);
+
+  const handleToggleBookmark = () => {
+    const plantId = plant.id;
+    if (!plantId) return;
+    toggleBookmarkById(plantId);
+    handleClose();
+  };
 
   const handleDelete = () => {
     setName("");
@@ -53,6 +65,9 @@ const PlantsInformModal = ({ open, setOpen }: PlantsInformModalProps) => {
               {menuOpen && (
                 <ActionMenu>
                   <Divider />
+                  <ActionItem data-danger onClick={handleToggleBookmark}>
+                    북마크
+                  </ActionItem>
                   <ActionItem data-danger onClick={handleDelete}>
                     삭제
                   </ActionItem>

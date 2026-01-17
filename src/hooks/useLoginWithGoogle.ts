@@ -9,6 +9,7 @@ export const useLoginWithGoogle = () => {
     mutationFn: loginWithGoogle,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth", "profile"] });
+      queryClient.invalidateQueries({ queryKey: ["bookmarkedPlants"] });
     },
     onError: (err: unknown) => {
       const authError = err as { code?: string };

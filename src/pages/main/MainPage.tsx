@@ -6,13 +6,15 @@ import PlantsCard, { SkeletonPlantsCard } from "../../common/components/PlantsCa
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import useGetBookmarkedPlants from "../../hooks/useGetBookmarkedPlants";
 
 // 메인페이지
 // 모든 유저 -> 기록하러가기만 보임
 // 로그인 후 기록 저장 된 유저 -> 하단 나의 반려식물 카드 보임
 const MainPage = () => {
   const navigate = useNavigate();
-  const isPlantsLoading = true;
+
+  const { data: bookmarkedPlants, isLoading: isBookmarkedPlantsLoading } = useGetBookmarkedPlants();
 
   // 등장 애니메이션
   useEffect(() => {
@@ -44,20 +46,16 @@ const MainPage = () => {
 
 
         <CardWrap>
-          {isPlantsLoading ? (
+          {isBookmarkedPlantsLoading ? (
             <>
               {Array.from({ length: 6 }).map((_, index) => (
                 <SkeletonPlantsCard key={index} variant="rectangular" />
               ))}
             </>
           ) : (
-            <>
-              <PlantsCard />
-              <PlantsCard />
-              <PlantsCard />
-              <PlantsCard />
-              <PlantsCard />
-            </>
+            bookmarkedPlants?.map((plant) => (
+              <PlantsCard key={plant.id} plant={plant} />
+            ))
           )}
         </CardWrap>
       </UserPlantsContents>

@@ -2,10 +2,10 @@ import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Skeleton, styled } from "@mui/material";
 import PlantsInformModal from "./PlantsInformModal";
+import type { PlantRecord } from "../../models/record";
 
 // 기본 카드 컴포넌트
-
-const PlantsCard = () => {
+const PlantsCard = ({ plant }: { plant: PlantRecord }) => {
   // 카드 클릭시 모달 오픈
   const [open, setOpen] = useState(false);
 
@@ -13,14 +13,14 @@ const PlantsCard = () => {
     <>
       <PlantsCardWrap>
         <PlantsImageWrap>
-          <img src="/src/assets/platEx01.png" alt="풀어보고" />
+          <img src={plant.thumbnailImg} alt={plant.plantName} />
         </PlantsImageWrap>
         <ShowIcon>
           <SearchIcon onClick={() => setOpen(true)} />
         </ShowIcon>
       </PlantsCardWrap>
 
-      <PlantsInformModal open={open} setOpen={setOpen} />
+      <PlantsInformModal open={open} setOpen={setOpen} plant={plant} />
     </>
   );
 };

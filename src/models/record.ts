@@ -21,6 +21,7 @@ export interface PlantRecord {
   plantCaution: string; // 주의사항 
   plantImg: string; // 원본 이미지 URL
   thumbnailImg: string; // 썸네일 이미지 URL(저용량량)
+  isBookmarked: boolean; // 책갈피 여부
   createDt: Timestamp; // 레코드 생성 일시
   createId: string; // 레코드 생성자 ID
   updateDt: Timestamp; // 레코드 마지막 수정 일시

@@ -11,12 +11,19 @@ import { savePlantRecord } from "../../../services/plantRecordService";
 type ShowPlantsInformResultProps = {
   imageFile: File;
   aiResponse: AiResponse | undefined;
-  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<AiResponse, Error>>
+  refetch: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<AiResponse, Error>>;
   isLoading: boolean;
 };
 
 // 분석이 완료된 식물사진에 대한 결과를 보여주는 컴포넌트
-const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: ShowPlantsInformResultProps) => {
+const ShowPlantsInformResult = ({
+  imageFile,
+  aiResponse,
+  refetch,
+  isLoading,
+}: ShowPlantsInformResultProps) => {
   const navigate = useNavigate();
   const { data: user } = useGetUserProfile();
 
@@ -35,7 +42,7 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
-    if(!imageFile){
+    if (!imageFile) {
       return;
     }
 
@@ -50,7 +57,7 @@ const ShowPlantsInformResult = ({ imageFile, aiResponse, refetch, isLoading }: S
   }, [imageFile]);
 
   useEffect(() => {
-    if(!aiResponse){
+    if (!aiResponse) {
       return;
     }
 
@@ -199,15 +206,16 @@ const Wrapper = styled(Box)(({ theme }) => ({
 const ImgBox = styled(Box)(() => ({
   "& img": {
     width: "100%",
-    height: "auto",
+    height: "100%",
     objectFit: "cover",
+    aspectRatio: "1/1",
   },
 }));
 
 const SkeletonImgBox = styled(Skeleton)(() => ({
   width: "100%",
   height: "auto",
-  borderRadius:"20px",
+  borderRadius: "20px",
   objectFit: "cover",
 }));
 

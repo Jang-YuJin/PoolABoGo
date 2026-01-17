@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Skeleton, Typography, styled } from "@mui/material";
 
 type EditFieldsProps = {

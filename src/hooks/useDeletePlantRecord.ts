@@ -22,6 +22,7 @@ export function useDeletePlantRecord(userId: string) {
 
         return { ...old, pages: nextPages };
       });
+      queryClient.invalidateQueries({queryKey: ['plantRecords']});
     },
   });
 }

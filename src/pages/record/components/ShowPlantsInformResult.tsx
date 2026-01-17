@@ -3,29 +3,30 @@ import { Box, Skeleton, styled, Typography, Alert } from "@mui/material";
 import EditFields, { SkeletonField } from "../../../common/components/EditFields";
 import PrimaryButton from "../../../common/components/PrimaryButton";
 import { useNavigate } from "react-router-dom";
-import type { AiResponse } from "../../../models/ai";
 import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useGetUserProfile } from "../../../hooks/useGetUserProfile";
-import { savePlantRecord } from "../../../services/plantRecordService";
+import useCreatePlantRecord from "../../../hooks/useCreatePlantRecord";
+import type { AnalysisRecord } from "../../../models/analysisRecord";
 
 type ShowPlantsInformResultProps = {
   imageFile: File;
-  aiResponse: AiResponse | undefined;
+  analysisRecord: AnalysisRecord | undefined;
   refetch: (
     options?: RefetchOptions | undefined
-  ) => Promise<QueryObserverResult<AiResponse, Error>>;
+  ) => Promise<QueryObserverResult<AnalysisRecord, Error>>;
   isLoading: boolean;
 };
 
 // 분석이 완료된 식물사진에 대한 결과를 보여주는 컴포넌트
 const ShowPlantsInformResult = ({
   imageFile,
-  aiResponse,
+  analysisRecord,
   refetch,
   isLoading,
 }: ShowPlantsInformResultProps) => {
   const navigate = useNavigate();
   const { data: user } = useGetUserProfile();
+  const { mutate: createPlantRecord } = useCreatePlantRecord();
 
   // 입력 값 상태 (더미값)
   const [name, setName] = useState("");
@@ -57,15 +58,15 @@ const ShowPlantsInformResult = ({
   }, [imageFile]);
 
   useEffect(() => {
-    if (!aiResponse) {
+    if (!analysisRecord) {
       return;
     }
 
-    setName(aiResponse.plantName);
-    setDesc(aiResponse.plantDesc);
-    setStatus(aiResponse.plantStatus.toString());
-    setCaution(aiResponse.plantCaution);
-  }, [aiResponse]);
+    setName(analysisRecord.plantName);
+    setDesc(analysisRecord.plantDesc);
+    setStatus(analysisRecord.plantStatus.toString());
+    setCaution(analysisRecord.plantCaution);
+  }, [analysisRecord]);
 
   const saveData = async () => {
     if (!user) {
@@ -73,7 +74,7 @@ const ShowPlantsInformResult = ({
       return;
     }
 
-    if (!aiResponse || !imageFile) {
+    if (!analysisRecord || !imageFile) {
       setSaveError("분석 결과 또는 이미지 파일이 없습니다.");
       return;
     }
@@ -83,13 +84,13 @@ const ShowPlantsInformResult = ({
     setSaveSuccess(false);
 
     try {
-      await savePlantRecord({
+      createPlantRecord({
         imageFile,
         userId: user.uid,
-        plantName: aiResponse.plantName,
-        plantDesc: aiResponse.plantDesc,
-        plantStatus: aiResponse.plantStatus.toString(),
-        plantCaution: aiResponse.plantCaution,
+        plantName: analysisRecord.plantName,
+        plantDesc: analysisRecord.plantDesc,
+        plantStatus: analysisRecord.plantStatus.toString(),
+        plantCaution: analysisRecord.plantCaution,
       });
 
       setSaveSuccess(true);
@@ -144,7 +145,7 @@ const ShowPlantsInformResult = ({
         <PrimaryButton 
           label={saving ? "저장 중..." : "기록 저장하기"} 
           onClick={saveData}
-          disabled={saving || !user || !aiResponse}
+          disabled={saving || !user || !analysisRecord}
         />
         {!user && (
           <Typography variant="subtitle1" sx={{ mt: 1, color: 'text.secondary' }}>

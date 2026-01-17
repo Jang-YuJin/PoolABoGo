@@ -3,10 +3,10 @@ import { Box, IconButton, Modal, Typography, styled, Divider, Skeleton } from "@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import EditFields, { SkeletonField } from "./EditFields";
-import type { PlantRecord } from "../../models/record";
+import type { PlantRecord } from "../../models/plantRecord";
 import useToggleBookmarkById from "../../hooks/useToggleBookmarkById";
 import { useDeletePlantRecord } from "../../hooks/useDeletePlantRecord";
-import { useAuthUser } from "../../hooks/useAuthUser";
+import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 
 type PlantsInformModalProps = {
   open: boolean;
@@ -61,7 +61,7 @@ const PlantsInformModal = ({
   };
 
   // 삭제
-  const { user, loading: isUserLoading } = useAuthUser();
+  const { data: user } = useGetUserProfile();
   const userId = user?.uid;
 
   const { mutate: deleteRecord, isPending: isDeleting } = useDeletePlantRecord(userId || "");
@@ -104,7 +104,7 @@ const PlantsInformModal = ({
                   <ActionItem 
                     data-danger 
                     onClick={handleDelete} 
-                    disabled={isDeleting || !userId || isUserLoading}
+                    disabled={isDeleting || !userId}
                   >
                     삭제
                   </ActionItem>

@@ -1,6 +1,6 @@
 import { collection, query, where, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
-import type { PlantRecord } from "../models/record";
+import type { PlantRecord } from "../models/plantRecord";
 
 export async function getBookmarkedPlants(userId: string): Promise<PlantRecord[]> {
     try {

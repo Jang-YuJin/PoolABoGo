@@ -1,15 +1,5 @@
-import { Timestamp } from 'firebase/firestore';
-
-// 식물 상태
-export const PlantStatus = {
-  HEALTHY: 'healthy', // 건강
-  WARNING: 'warning', // 주의
-  CRITICAL: 'critical', // 위험험
-  UNKNOWN: 'unknown' // 알 수 없음
-} as const;
-
-// PlantStatus 타입 정의
-export type PlantStatusType = typeof PlantStatus[keyof typeof PlantStatus];
+import { QueryDocumentSnapshot, Timestamp, type DocumentData } from 'firebase/firestore';
+import type { PlantStatusType } from './common';
 
 // 식물 기록 데이터 모델
 export interface PlantRecord {
@@ -28,3 +18,23 @@ export interface PlantRecord {
   updateDt: Timestamp; // 레코드 마지막 수정 일시
   updateId: string; // 레코드 마지막 수정자 ID
 }
+
+export interface CreatePlantRecordParams {
+  imageFile: File;
+  userId: string;
+  plantName: string;
+  plantDesc: string;
+  plantStatus: string;
+  plantCaution: string;
+}
+
+export interface GetPlantRecordsParams {
+  userId: string;
+  pageSize: number;
+  lastDoc?: QueryDocumentSnapshot<DocumentData> | null;
+}
+
+export type GetPlantRecordsResponse = {
+  items: PlantRecord[];
+  lastDoc: QueryDocumentSnapshot<DocumentData> | null;
+};

@@ -7,7 +7,7 @@ import { useLogout } from "../../hooks/useLogout";
 import { useLoginWithGoogle } from "../../hooks/useLoginWithGoogle";
 
 // 풀어보고 로고 이미지
-import logo from "/assets/logo.png";
+import logo from "/logo.png";
 
 // 페이지 상단 헤더 컴포넌트
 const Header = () => {

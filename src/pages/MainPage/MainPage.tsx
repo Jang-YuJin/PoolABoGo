@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import useGetBookmarkedPlants from "../../hooks/useGetBookmarkedPlants";
 
 // 메인페이지 이미지
-import MainPageImage from "/assets/mainImage.png";
+import MainPageImage from "/mainImage.png";
 
 // 메인페이지
 // 모든 유저 -> 기록하러가기만 보임

@@ -10,6 +10,7 @@ export async function getBookmarkedPlants(userId: string): Promise<PlantRecord[]
         const q = query(
             recordsRef,
             where("userId", "==", userId),
+            where("recordStatus", "==", true),
             where("isBookmarked", "==", true)
         );
         const querySnapshot = await getDocs(q);

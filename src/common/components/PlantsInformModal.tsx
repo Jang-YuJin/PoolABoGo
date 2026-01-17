@@ -49,10 +49,10 @@ const PlantsInformModal = ({
     setMenuOpen(false);
     handleClose();
   };
-  
+
   // 
   const { mutate: toggleBookmarkById } = useToggleBookmarkById();
-  
+
   const handleToggleBookmark = () => {
     const plantId = record.id;
     if (!plantId) return;
@@ -70,11 +70,7 @@ const PlantsInformModal = ({
     if (!record.id) return;
 
     deleteRecord(
-      {
-        recordId: record.id,
-        plantImgUrl: record.plantImg,
-        thumbnailImgUrl: record.thumbnailImg,
-      },
+      record.id,
       {
         onSuccess: () => {
           alert("삭제 되었습니다.");
@@ -102,8 +98,8 @@ const PlantsInformModal = ({
               {menuOpen && (
                 <ActionMenu>
                   <Divider />
-                  <ActionItem data-danger onClick={handleToggleBookmark}>
-                    북마크
+                  <ActionItem onClick={handleToggleBookmark}>
+                    {record.isBookmarked ? "북마크 취소" : "북마크"}
                   </ActionItem>
                   <ActionItem data-danger onClick={handleDelete} disabled={isDeleting}>
                     삭제

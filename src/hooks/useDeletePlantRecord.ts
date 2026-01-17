@@ -4,20 +4,13 @@ import { useMutation, useQueryClient, type InfiniteData } from "@tanstack/react-
 import type { PlantRecord } from "../models/record";
 import deleteUserPlantsRecords from "../services/deleteUserPlantsRecords";
 
-type DeleteVars = {
-  recordId: string;
-  plantImgUrl?: string | null;
-  thumbnailImgUrl?: string | null;
-};
-
 export function useDeletePlantRecord(userId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (vars: DeleteVars) => deleteUserPlantsRecords(vars),
+    mutationFn: (recordId: string) => deleteUserPlantsRecords(recordId),
 
-    onSuccess: (_data, vars) => {
-      const { recordId } = vars;
+    onSuccess: (_data, recordId) => {
 
       queryClient.setQueryData(["plantRecords", userId], (old: InfiniteData<any> | undefined) => {
         if (!old) return old;

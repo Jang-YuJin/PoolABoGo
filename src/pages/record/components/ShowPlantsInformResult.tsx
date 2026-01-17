@@ -93,9 +93,11 @@ const ShowPlantsInformResult = ({
       });
 
       setSaveSuccess(true);
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+
+      // TODO: 이건 UX 해침
+      // setTimeout(() => {
+      //   navigate("/");
+      // }, 1500);
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : "저장 중 오류가 발생했습니다.");
     } finally {

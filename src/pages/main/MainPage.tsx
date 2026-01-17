@@ -39,26 +39,30 @@ const MainPage = () => {
       </TopContents>
 
       {/* 식물 사진 저장 했을 때 보여짐 */}
-      <UserPlantsContents>
-        <Typography variant="h1" fontWeight={700} sx={{ marginBottom: "20px" }}>
-          나의 대표 반려식물
-        </Typography>
+      {bookmarkedPlants && bookmarkedPlants.length > 0 && (
+        <>
+          <UserPlantsContents>
+            <Typography variant="h1" fontWeight={700} sx={{ marginBottom: "20px" }}>
+              나의 대표 반려식물
+            </Typography>
 
 
-        <CardWrap>
-          {isBookmarkedPlantsLoading ? (
-            <>
-              {Array.from({ length: 6 }).map((_, index) => (
-                <SkeletonPlantsCard key={index} variant="rectangular" />
-              ))}
-            </>
-          ) : (
-            bookmarkedPlants?.map((plant) => (
-              <PlantsCard key={plant.id} plant={plant} />
-            ))
-          )}
-        </CardWrap>
-      </UserPlantsContents>
+            <CardWrap>
+              {isBookmarkedPlantsLoading ? (
+                <>
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <SkeletonPlantsCard key={index} variant="rectangular" />
+                  ))}
+                </>
+              ) : (
+                bookmarkedPlants?.map((plant) => (
+                  <PlantsCard key={plant.id} record={plant} />
+                ))
+              )}
+            </CardWrap>
+          </UserPlantsContents>
+        </>
+      )}
     </ContentsWrap>
   );
 };

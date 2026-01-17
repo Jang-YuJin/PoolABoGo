@@ -1,27 +1,19 @@
-import { deleteDoc, doc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
-import { db, storage } from "../utils/firebase";
-
-const COLLECTION_NAME = "plantRecords";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 // 유저의 식물기록 삭제
-const deleteUserPlantsRecords = async (params: {
-  recordId: string;
-  plantImgUrl?: string | null;
-  thumbnailImgUrl?: string | null;
-}): Promise<void> => {
-  if (!db) throw new Error("Firestore 초기화 실패");
-  if (!storage) throw new Error("Storage 초기화 실패");
+const deleteUserPlantsRecords = async (recordId: string): Promise<void> => {
+  const docRef = doc(db, "plantRecords", recordId);
+  const docSnap = await getDoc(docRef);
 
-  const { recordId, plantImgUrl, thumbnailImgUrl } = params;
-
-  const tasks: Promise<void>[] = [];
-  if (plantImgUrl) tasks.push(deleteObject(ref(storage, plantImgUrl)));
-  if (thumbnailImgUrl) tasks.push(deleteObject(ref(storage, thumbnailImgUrl)));
-
-  await Promise.all(tasks);
-
-  await deleteDoc(doc(db, COLLECTION_NAME, recordId));
+  if (docSnap.exists()) {
+    await updateDoc(docRef, {
+      recordStatus: "deleted",
+      updateDt: new Date()
+    });
+  } else {
+    throw new Error("해당 문서를 찾을 수 없습니다.");
+  }
 };
 
 export default deleteUserPlantsRecords;

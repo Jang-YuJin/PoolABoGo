@@ -61,13 +61,13 @@ const PlantsInformModal = ({
   };
 
   // 삭제
-  const { user } = useAuthUser();
-  const userId = user!.uid;
+  const { user, loading: isUserLoading } = useAuthUser();
+  const userId = user?.uid;
 
-  const { mutate: deleteRecord, isPending: isDeleting } = useDeletePlantRecord(userId);
+  const { mutate: deleteRecord, isPending: isDeleting } = useDeletePlantRecord(userId || "");
 
   const handleDelete = () => {
-    if (!record.id) return;
+    if (!record.id || !userId) return;
 
     deleteRecord(
       record.id,
@@ -101,7 +101,11 @@ const PlantsInformModal = ({
                   <ActionItem onClick={handleToggleBookmark}>
                     {record.isBookmarked ? "북마크 취소" : "북마크"}
                   </ActionItem>
-                  <ActionItem data-danger onClick={handleDelete} disabled={isDeleting}>
+                  <ActionItem 
+                    data-danger 
+                    onClick={handleDelete} 
+                    disabled={isDeleting || !userId || isUserLoading}
+                  >
                     삭제
                   </ActionItem>
                 </ActionMenu>

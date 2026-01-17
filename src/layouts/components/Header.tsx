@@ -42,9 +42,13 @@ const Header = () => {
 
   // 로그아웃
   const handleLogout = () => {
-    logout();
     handleCloseMenu();
-    navigate("/");
+    logout(undefined, {
+      onSuccess: () => {
+        // 로그아웃 성공 시 페이지 완전 리로딩
+        window.location.href = "/";
+      },
+    });
   };
 
   return (

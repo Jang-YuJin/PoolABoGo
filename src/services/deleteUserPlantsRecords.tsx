@@ -8,7 +8,7 @@ const deleteUserPlantsRecords = async (recordId: string): Promise<void> => {
 
   if (docSnap.exists()) {
     await updateDoc(docRef, {
-      recordStatus: "deleted",
+      recordStatus: false,
       updateDt: new Date()
     });
   } else {

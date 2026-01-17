@@ -44,6 +44,7 @@ export async function createPlantRecord(params: CreatePlantRecordParams): Promis
       plantImg: params.plantImg,
       thumbnailImg: params.thumbnailImg,
       isBookmarked: false,
+      recordStatus: true,
       createDt: now,
       createId: params.userId,
       updateDt: now,

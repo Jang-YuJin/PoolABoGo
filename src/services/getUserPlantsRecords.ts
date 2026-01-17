@@ -32,7 +32,7 @@ const getUserPlantsRecords = async (params: {
   const base = query(
     collection(db, COLLECTION_NAME),
     where("userId", "==", userId),
-    where("recordStatus", "!=", "deleted"),
+    where("recordStatus", "==", true),
     orderBy("createDt", "desc"),
     limit(pageSize)
   );

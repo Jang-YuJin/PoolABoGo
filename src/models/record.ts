@@ -22,6 +22,7 @@ export interface PlantRecord {
   plantImg: string; // 원본 이미지 URL
   thumbnailImg: string; // 썸네일 이미지 URL(저용량량)
   isBookmarked: boolean; // 책갈피 여부
+  recordStatus: boolean; // 레코드 상태 (true: 활성, false: 삭제)
   createDt: Timestamp; // 레코드 생성 일시
   createId: string; // 레코드 생성자 ID
   updateDt: Timestamp; // 레코드 마지막 수정 일시

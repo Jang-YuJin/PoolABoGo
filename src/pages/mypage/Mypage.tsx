@@ -10,6 +10,10 @@ import { useAuthUser } from "../../hooks/useAuthUser";
 // 카드는 pc : 3 / tablet : 2 / mo : 1 씩 보임
 const MyPage = () => {
   const { user } = useAuthUser();
+
+  if (!user) {
+    return <Alert severity="error">로그인 후 이용해주세요.</Alert>;
+  }
   const userId = user!.uid;
 
   const {
@@ -42,7 +46,10 @@ const MyPage = () => {
     return () => io.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  if (error) return <Alert severity="error">식물 기록을 불러오지 못했어요.</Alert>;
+  if (error) {
+    console.error(error);
+    return <Alert severity="error">식물 기록을 불러오지 못했어요.</Alert>;
+  }
 
   return (
     <div>

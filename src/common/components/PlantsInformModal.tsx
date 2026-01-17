@@ -4,6 +4,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import EditFields, { SkeletonField } from "./EditFields";
 import type { PlantRecord } from "../../models/record";
+import { useDeletePlantRecord } from "../../hooks/useDeletePlantRecord";
+import { useAuthUser } from "../../hooks/useAuthUser";
 
 type PlantsInformModalProps = {
   open: boolean;
@@ -38,19 +40,41 @@ const PlantsInformModal = ({
     setCaution(record.plantCaution ?? "");
   }, [open, record]);
 
+  // 모달 열기 핸들러
   const handleToggleMenu = () => setMenuOpen((v) => !v);
 
-  const handleDelete = () => {
-    setName("");
-    setDesc("");
-    setStatus("");
-    setCaution("");
-    setMenuOpen(false);
-  };
-
+  // 모달 닫기 핸들러
   const handleModalClose = () => {
     setMenuOpen(false);
     handleClose();
+  };
+
+  // 삭제
+  const { user } = useAuthUser();
+  const userId = user!.uid;
+
+  const { mutate: deleteRecord, isPending: isDeleting } = useDeletePlantRecord(userId);
+
+  const handleDelete = () => {
+    if (!record.id) return;
+
+    deleteRecord(
+      {
+        recordId: record.id,
+        plantImgUrl: record.plantImg,
+        thumbnailImgUrl: record.thumbnailImg,
+      },
+      {
+        onSuccess: () => {
+          alert("삭제 되었습니다.");
+          setMenuOpen(false);
+          handleClose();
+        },
+        onError: () => {
+          setMenuOpen(false);
+        },
+      }
+    );
   };
 
   return (
@@ -67,7 +91,7 @@ const PlantsInformModal = ({
               {menuOpen && (
                 <ActionMenu>
                   <Divider />
-                  <ActionItem data-danger onClick={handleDelete}>
+                  <ActionItem data-danger onClick={handleDelete} disabled={isDeleting}>
                     삭제
                   </ActionItem>
                 </ActionMenu>

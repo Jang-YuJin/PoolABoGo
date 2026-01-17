@@ -8,7 +8,7 @@ const PAGE_SIZE = 9;
 export const useGetUserPlantsRecords = (userId: string | null | undefined) => {
   return useInfiniteQuery({
     queryKey: ["plantRecords", userId],
-    enabled: !!userId,
+    enabled: !!userId, // 아이디 없으면 실행 X
     initialPageParam: null as QueryDocumentSnapshot<DocumentData> | null,
     queryFn: ({ pageParam }) =>
       getUserPlantsRecords({

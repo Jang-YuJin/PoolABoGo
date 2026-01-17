@@ -19,6 +19,7 @@ export type PlantRecordsPage = {
   lastDoc: QueryDocumentSnapshot<DocumentData> | null;
 };
 
+// 유저의 저장된 식물 데이터 가져오기
 const getUserPlantsRecords = async (params: {
   userId: string;
   pageSize: number;
